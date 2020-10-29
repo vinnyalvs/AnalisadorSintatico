@@ -1,9 +1,9 @@
 grammar Lang;
 
 prog :	(data)* (func)* ;
-data :	DATA ID OP_BRACKET decl* CL_BRACKET ;
+data :	DATA ID OP_BRACKET (decl)* CL_BRACKET ;
 decl:	ID DOUBLECOLON type SEMI ;
-func:	ID OP_PARENTHESIS (params)? CL_PARENTHESIS (COLON type (COMMA type)* )? OP_BRACKET (cmd)* CL_BRACKET ;
+func:	ID OP_PARENTHESIS (params)? CL_PARENTHESIS (COLON type (COMMA type )? OP_BRACKET (cmd)* CL_BRACKET ;
 params:	ID DOUBLECOLON type ( COMMA  ID DOUBLECOLON type )* ;
 type: type OP_SQBRACKET CL_SQBRACKET
     | btype
@@ -23,8 +23,8 @@ cmd:	OP_BRACKET  cmd* CL_BRACKET
 	|	PRINT exp SEMI
 	|	RETURN exp (COMMA exp)* SEMI
 	|	lvalue EQ exp SEMI
-	|	ID OP_PARENTHESIS (exps)? CL_PARENTHESIS ( RELACIONAL lvalue ( COMMA lvalue )* GREATER_THAN )? ';'
-	;
+	|	ID OP_PARENTHESIS (exps)? CL_PARENTHESIS ( RELACIONAL lvalue ( COMMA lvalue )* GREATER_THAN )? SEMI
+;
 exp:    exp AND exp
     |   rexp
 ;
@@ -41,10 +41,9 @@ mexp:	mexp TIMES sexp
     |   mexp DIV sexp
     |   mexp MOD sexp
     |   sexp
-    |   sexp
 ;
-sexp:	DENY sexp
-	|	MINUS sexp
+sexp:	<assoc=right> DENY sexp
+	|	<assoc=right> MINUS sexp
 	|	LITERAL_TRUE
 	|	LITERAL_FALSE
 	|	LITERAL_NULL
@@ -55,14 +54,14 @@ sexp:	DENY sexp
 ;
 pexp:	lvalue
 	|	OP_PARENTHESIS exp CL_PARENTHESIS
-	|	NEW  type (OP_SQBRACKET sexp CL_SQBRACKET)?
+	|	NEW  type (OP_SQBRACKET exp CL_SQBRACKET)?
 	|	ID OP_PARENTHESIS (exps)? CL_PARENTHESIS OP_SQBRACKET exp CL_SQBRACKET
 ;
 lvalue:	ID
-	|	lvalue OP_BRACKET exp CL_SQBRACKET
+	|	lvalue OP_BRACKET exp CL_BRACKET
 	|	lvalue DOT ID
 ;
-exps:	exp  (COLON exp)*  ;
+exps:	exp  (COMMA exp)*  ;
 
 
 /* Regras Léxicas */
@@ -90,7 +89,7 @@ ID: [A-Za-z]('_' | [0-9]|[a-zA-Z])*; //ALPHA ( ALPHA | DIGIT |'_')*;
 
 LITERAL_INT : [0-9]+;
 LITERAL_FLOAT : [0-9]*'.'[0-9]+;
-LITERAL_CHAR : '"' ( '\\' [btnfr"'\\] | ~[\r\n\\"] ) '"' ;
+LITERAL_CHAR : '\'' ( '\\' [btnfr"'\\] | ~[\r\n\\"] ) '\'' ;
 LITERAL_TRUE : 'true';
 LITERAL_FALSE : 'false';
 LITERAL_NULL : 'null';
