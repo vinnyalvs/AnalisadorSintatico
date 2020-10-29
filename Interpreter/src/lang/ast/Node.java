@@ -1,6 +1,8 @@
 package lang.ast;
 
-public class Node extends SuperNode {
+import java.util.HashMap;
+
+public abstract class Node extends SuperNode {
 
     private int line,col;
 
@@ -20,4 +22,6 @@ public class Node extends SuperNode {
     public int getColumn() {
         return 0;
     }
+
+    public abstract int interpret(HashMap<String, Integer> m);
 }
