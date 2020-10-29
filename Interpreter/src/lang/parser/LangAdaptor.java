@@ -2,6 +2,7 @@ package lang.parser;
 
 import lang.antlr.LangLexer;
 import lang.antlr.LangParser;
+import lang.ast.CMD;
 import lang.ast.Node;
 import lang.ast.SuperNode;
 import org.antlr.v4.runtime.CharStreams;
@@ -23,7 +24,7 @@ public class LangAdaptor implements ParseAdaptor {
         if( parser.getNumberOfSyntaxErrors() > 0)
             return null;
 
-        SuperNode node = new Node();
+        SuperNode node = new CMD(0,0);
 
         return node;
     }
