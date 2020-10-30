@@ -5,8 +5,8 @@
 
 package lang.parser;
 
-import lang.antlr.LangLexer;
-import lang.antlr.LangParser;
+import lang.parser.LangLexer;
+import lang.parser.LangParser;
 import lang.ast.Node;
 import lang.ast.SuperNode;
 import org.antlr.v4.runtime.*;
