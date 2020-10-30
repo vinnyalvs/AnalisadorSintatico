@@ -2,7 +2,9 @@
 grammar Lang;
 
 @header {
-    package lang.antlr;
+/* Edson Lopes da Silva Júnior 201635023
+   Vinicius Alberto Alves da Silva 201665558C  */
+    package lang.parser;
 
 }
 
@@ -48,8 +50,8 @@ mexp:	mexp TIMES sexp
     |   mexp MOD sexp
     |   sexp
 ;
-sexp:	<assoc=right> DENY sexp
-	|	<assoc=right> MINUS sexp
+sexp:	DENY sexp
+	|	MINUS sexp
 	|	LITERAL_TRUE
 	|	LITERAL_FALSE
 	|	LITERAL_NULL
@@ -96,7 +98,7 @@ ID: [A-Za-z]('_' | [0-9]|[a-zA-Z])*;
 
 LITERAL_INT : [0-9]+;
 LITERAL_FLOAT : [0-9]*'.'[0-9]+;
-LITERAL_CHAR : '\'' ( '\\' [btnfr"'\\] | ~[\r\n\\"] ) '\'' ;
+LITERAL_CHAR : '\'' ( '\\' [btnr"'\\] | ~[\r\n\\"] ) '\'' ;
 LITERAL_TRUE : 'true';
 LITERAL_FALSE : 'false';
 LITERAL_NULL : 'null';
